@@ -1,0 +1,115 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<jqueryAjaxCrudOperation.Models.StudentModel>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/js/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+    <link href="//cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap.min.css" />
+
+    <style>
+        div.dt-top-container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+
+        div.dt-center-in-div {
+            margin: 0 auto;
+        }
+
+        div.dt-filter-spacer {
+            margin: 10px 0;
+        }
+
+        .datatables_length {
+            float: left;
+            height: 2.5em;
+            width: 40%;
+        }
+
+        .datatables_filter {
+            float: right !important;
+        }
+
+        div.datatables_wrapper div.datatables_paginate {
+            float: unset;
+            text-align: right;
+            white-space: nowrap;
+        }
+    </style>
+    <h4 class="text-center">Student History</h4>
+    <link href="~/js/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <p>
+        <a onclick="showInPopup('@Url.Action("AddorEdit","Student",null,Context.Request.Scheme)','New Student')" class="btn btn-primary">New Student</a>
+    </p>
+    @*<input type="button" id="delete" value="Delete Selected" style="margin-bottom:15px" />*@
+
+    <table class="display table" id="Studenttbl">
+        <thead>
+            <tr>
+                
+                <th>Student Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Mobile No.</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>
+                        <input type="checkbox" class="checkBox" value="@item.StudentId" name="studentIDs"/>
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MobileNo)
+                    </td>
+                    <td>
+                        <a onclick="showInPopup('@Url.Action("AddorEdit","Student",new {id = @item.StudentId},Context.Request.Scheme)','Update Student')" class="btn btn-success">Edit</a>
+                        @*<a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |*@
+                        <form onclick="return jQueryAjaxDelete(this)" asp-action="Delete" class="d-lg-inline" asp-route-id="@item.StudentId">
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" language="javascript" src=" https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.print.min.js"></script>
+    <script>
+        $('#Studenttbl').DataTable({
+            "dom": '<"dt-top-container"<l><"dt-center-in-div"B><f>r>t<ip>',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    </script>
